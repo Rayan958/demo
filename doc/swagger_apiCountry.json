@@ -1,0 +1,157 @@
+http: //api-countriescode.kermit.rd.francetelecom.fr/countrycode/v1
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API Country Code",
+        "version": "1.0.0",
+        "description": "API Country Code allows to allows to retrieve country data
+        (ISO alpha 2, E212, Dialing code) indicating one parameter 
+        from this list (MSISDN, Country code (ISO alpha 2), Dialing code, Country name) "
+    },
+    "host": "api-countriescode.kermit.rd.francetelecom.fr",
+    "schemes": [
+        "http"
+    ],
+    "basePath": "/countrycode/v1",
+    "paths": {
+        "/countries": {
+            "get": {
+				"produces": [
+					"application/json",
+				],
+                "tags": [
+                    "apiCountry"
+                ],
+                "description": "Returns a list of country data (ISO alpha 2, E212, Dialing code)",
+                "parameters": [
+                    {
+                        "name": "msisdn",
+                        "in": "query",
+                        "description": "Phone number starting with the dialing code",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "countrycode",
+                        "in": "query",
+                        "description": "Country code (ISO alpha 2)",
+                        "required": false,
+                        "type": "string",
+                        "maxLength": 2
+                    },
+                    {
+                        "name": "dialingcode",
+                        "in": "query",
+                        "description": "Indicative of phone number",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "countryname",
+                        "in": "query",
+                        "description": "Name of the country",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "Offset of first item<br/>Default: 0",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+						"default": 0
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of items in response<br/>Default: 50",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32",
+						"default": 50
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "Collection of Country data",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/country_data"
+                            }
+                        }						
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "default": {
+                        "description": "<a description>",
+                        "schema": {
+                            "$ref": "common.json#/definitions/error_def"
+                        }
+                    }					
+                },
+                "security": [
+                    {
+                        "app_auth": []
+                    }
+                ]
+            }
+        }
+    },		
+    "definitions": {
+        "country_data": {
+            "type": "object",
+            "properties": {
+                "ITU_E212": {
+                    "type": "integer",
+                    "description": "Country code (E212)",
+                    "maxLength": 3
+                },
+                "ISO3166_1_Alpha_2": {
+                    "type": "string",
+                    "description": "Country code (ISO alpha 2)",
+                    "maxLength": 2
+                },
+                "Dialing_Code": {
+                    "type": "integer",
+                    "description": "Indicative of phone number",
+                }		
+            }
+		}		
+    },
+    "parameters": {
+        "jsonp": {
+            "name": "_jsonp",
+            "in": "query",
+            "description": "JSONP function name",
+            "required": false,
+            "type": "string"
+        }
+    },
+    "securityDefinitions": {
+        "app_auth": {
+            "type": "oauth2",
+            "flow": "application",
+            "description": "The 2-legs authentication",
+            "tokenUrl": "https://api.orange.com/oauth/v2/token"
+        }
+	},
+    "security": [
+        {
+            "app_auth": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "apiCountry",
+            "description": "http://api-countriescode.kermit.rd.francetelecom.fr/countrycode/v1/*"
+        }
+    ],
+    "externalDocs": {
+        "description": "Getting started",
+        "url": ""
+    }
+}
